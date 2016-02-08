@@ -1,11 +1,14 @@
 .PHONY : all test prepare_gtest
 GTEST_DIR = ./googletest/googletest
 BUILD_DIR = ./obj
-CXX       = g++
+CXX       ?= g++
 AR        = ar
 CXX_FLAGS = -g -std=c++11 -lncurses -DTEST=1 -I../
 
-prepare_gtest: $(BUILD_DIR)/libgtest.a
+prepare_gtest: $(BUILD_DIR) $(BUILD_DIR)/libgtest.a
+
+$(BUILD_DIR):
+	@mkdir obj
 
 $(BUILD_DIR)/libgtest.a: $(BUILD_DIR)/gtest-all.o
 	@$(AR) -rv $(BUILD_DIR)/libgtest.a $(BUILD_DIR)/gtest-all.o
