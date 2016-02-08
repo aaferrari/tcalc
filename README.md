@@ -2,3 +2,5 @@
 
 # tcalc
 TCalc (Terminal Calculator)
+
+![Output sample](https://github.com/lkpdn/tcalc/blob/master/tcalc.gif)
