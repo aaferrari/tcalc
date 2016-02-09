@@ -1,0 +1,8 @@
+tcalc
+test/obj/*
+*~
+*.swp
+GPATH
+GTAGS
+GRTAGS
+docs
