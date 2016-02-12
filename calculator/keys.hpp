@@ -323,7 +323,7 @@ std::vector<ButtonAttribute> getDefaultButtonAttributes() {
            /* bt        */ btn_t::btn_log,
            /* bat       */ btn_action_t::ACTION_BUFFER,
            /* blt       */ btn_loc_t::LOCATION_UNFIXED,
-           /* label     */ "logE",
+           /* label     */ "log",
            /* desc      */ "log to base e",
            /* inner_rep */ "log",
            /* action    */ nullptr
@@ -377,7 +377,7 @@ std::vector<ButtonAttribute> getDefaultButtonAttributes() {
            /* bt        */ btn_t::btn_acos,
            /* bat       */ btn_action_t::ACTION_BUFFER,
            /* blt       */ btn_loc_t::LOCATION_UNFIXED,
-           /* label     */ "acos_",
+           /* label     */ "acos",
            /* desc      */ "arc cosine",
            /* inner_rep */ "acos",
            /* action    */ nullptr
@@ -395,7 +395,7 @@ std::vector<ButtonAttribute> getDefaultButtonAttributes() {
            /* bt        */ btn_t::btn_asin,
            /* bat       */ btn_action_t::ACTION_BUFFER,
            /* blt       */ btn_loc_t::LOCATION_UNFIXED,
-           /* label     */ "asin_",
+           /* label     */ "asin",
            /* desc      */ "arc sine",
            /* inner_rep */ "asin",
            /* action    */ nullptr
@@ -413,7 +413,7 @@ std::vector<ButtonAttribute> getDefaultButtonAttributes() {
            /* bt        */ btn_t::btn_atan,
            /* bat       */ btn_action_t::ACTION_BUFFER,
            /* blt       */ btn_loc_t::LOCATION_UNFIXED,
-           /* label     */ "atan_",
+           /* label     */ "atan",
            /* desc      */ "arc tangent",
            /* inner_rep */ "atan",
            /* action    */ nullptr
@@ -431,7 +431,7 @@ std::vector<ButtonAttribute> getDefaultButtonAttributes() {
            /* bt        */ btn_t::btn_cos,
            /* bat       */ btn_action_t::ACTION_BUFFER,
            /* blt       */ btn_loc_t::LOCATION_UNFIXED,
-           /* label     */ "cos_",
+           /* label     */ "cos",
            /* desc      */ "cosine",
            /* inner_rep */ "cos",
            /* action    */ nullptr
@@ -476,7 +476,7 @@ std::vector<ButtonAttribute> getDefaultButtonAttributes() {
            /* bt        */ btn_t::btn_sin,
            /* bat       */ btn_action_t::ACTION_BUFFER,
            /* blt       */ btn_loc_t::LOCATION_UNFIXED,
-           /* label     */ "sin_",
+           /* label     */ "sin",
            /* desc      */ "sine",
            /* inner_rep */ "sin",
            /* action    */ nullptr
@@ -503,7 +503,7 @@ std::vector<ButtonAttribute> getDefaultButtonAttributes() {
            /* bt        */ btn_t::btn_tan,
            /* bat       */ btn_action_t::ACTION_BUFFER,
            /* blt       */ btn_loc_t::LOCATION_UNFIXED,
-           /* label     */ "tan_",
+           /* label     */ "tan",
            /* desc      */ "tangent",
            /* inner_rep */ "tan",
            /* action    */ nullptr

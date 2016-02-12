@@ -13,6 +13,7 @@ TEST_F(CalculatorTest, Calculation) {
     EXPECT_EQ(c.calculate<double>("3*(4+5)"), 27);
     EXPECT_EQ(c.calculate<double>("3*logn(30,2)/log2(30)"), 3);
     EXPECT_EQ(c.calculate<double>("acosh(exp(2)-sinh(2))"), 2);
+    EXPECT_EQ(c.calculate<double>("cos(0)+log(exp(1))"), 2);
 };
 
 TEST_F(CalculatorTest, PrintAlignedOnMainDisplayCC) {

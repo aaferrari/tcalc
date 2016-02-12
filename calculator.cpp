@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <climits>
+#include <regex>
 
 //#include <ncurses.h>
 #include "wrapped_ncurses.hpp"
@@ -294,6 +295,7 @@ void Calculator::showKeyHelp() {
     }
 };
 
+// TODO: refine
 void Calculator::exec(int key) {
     btn_t bt{btn_t::num_btn_types};
     switch (key) {
@@ -304,49 +306,81 @@ void Calculator::exec(int key) {
         return;
     }
 
-    if (getPartialOpString().size() == 0) {
-        switch (key) {
-        case '/': bt = btn_t::btn_div; break;
-        case '*': bt = btn_t::btn_multi; break;
-        case '-': bt = btn_t::btn_minus; break;
-        case '+': bt = btn_t::btn_plus; break;
-        case '9': bt = btn_t::btn_9; break;
-        case '8': bt = btn_t::btn_8; break;
-        case '7': bt = btn_t::btn_7; break;
-        case '6': bt = btn_t::btn_6; break;
-        case '5': bt = btn_t::btn_5; break;
-        case '4': bt = btn_t::btn_4; break;
-        case '3': bt = btn_t::btn_3; break;
-        case '2': bt = btn_t::btn_2; break;
-        case '1': bt = btn_t::btn_1; break;
-        case '0': bt = btn_t::btn_0; break;
-        case '(': bt = btn_t::btn_paren_open; break;
-        case ')': bt = btn_t::btn_paren_close; break;
-        case '{': bt = btn_t::btn_curl_open; break;
-        case '}': bt = btn_t::btn_curl_close; break;
-        case '[': bt = btn_t::btn_bracket_open; break;
-        case ']': bt = btn_t::btn_bracket_close; break;
-        case 'r': resize(); return;  /* hidden command... */
-        case '?': showKeyHelp(); return;
-        }
-        if (bt != btn_t::num_btn_types) {
-            push_button(bt);
+    std::string alpha = std::string(1, static_cast<char>(key));
+    if (getPartialOpString().size() > 0) {
+        std::string pending = getPartialOpString();
+        try {
+            std::regex e("^" + pending + alpha);
+            pushBackPartialOpString(alpha);
+            main_display->pushBackPartialOpString(alpha);
+            pending += alpha;
+            int match_count{0};
+            std::string candidate_label;
+            btn_t candidate_bt;
+            for (auto it = buttons.begin(); it != buttons.end(); it++) {
+                std::smatch m;
+                candidate_label = (*it)->getAttribute().label;
+                if (std::regex_search(candidate_label, m, e)) {
+                    ++match_count;
+                    candidate_bt = (*it)->getAttribute().bt;
+                }
+            }
+            if (match_count == 1 && candidate_label == pending) {
+                clearPartialOpString();
+                main_display->clearPartialOpString();
+                push_button(candidate_bt);
+            }
             return;
-        }
+        } catch (const std::regex_error& err) {
+            bool match_exists{false};
+            auto it = buttons.begin();
+            for (; it != buttons.end(); it++) {
+                if (pending == (*it)->getAttribute().label) {
+                    match_exists = true;
+                    break;
+                }
+            }
+            if (match_exists) {
+                clearPartialOpString();
+                main_display->clearPartialOpString();
+                push_button((*it)->getAttribute().bt);
+            } else {
+                pushBackPartialOpString(alpha);
+                main_display->pushBackPartialOpString(alpha);
+                return;
+            }
+        };
     }
 
-    std::string alpha = std::string(1, static_cast<char>(key));
-    pushBackPartialOpString(alpha);
-    main_display->pushBackPartialOpString(alpha);
-    std::string pending = getPartialOpString();
-    for (auto it = buttons.begin(); it != buttons.end(); it++) {
-        if ((*it)->getAttribute().label == pending) {
-            bt = (*it)->getAttribute().bt;
-            clearPartialOpString();
-            main_display->clearPartialOpString();
-            push_button(bt);
-            return;
-        }
+    switch (key) {
+    case '/': bt = btn_t::btn_div; break;
+    case '*': bt = btn_t::btn_multi; break;
+    case '-': bt = btn_t::btn_minus; break;
+    case '+': bt = btn_t::btn_plus; break;
+    case '9': bt = btn_t::btn_9; break;
+    case '8': bt = btn_t::btn_8; break;
+    case '7': bt = btn_t::btn_7; break;
+    case '6': bt = btn_t::btn_6; break;
+    case '5': bt = btn_t::btn_5; break;
+    case '4': bt = btn_t::btn_4; break;
+    case '3': bt = btn_t::btn_3; break;
+    case '2': bt = btn_t::btn_2; break;
+    case '1': bt = btn_t::btn_1; break;
+    case '0': bt = btn_t::btn_0; break;
+    case '(': bt = btn_t::btn_paren_open; break;
+    case ')': bt = btn_t::btn_paren_close; break;
+    case '{': bt = btn_t::btn_curl_open; break;
+    case '}': bt = btn_t::btn_curl_close; break;
+    case '[': bt = btn_t::btn_bracket_open; break;
+    case ']': bt = btn_t::btn_bracket_close; break;
+    case 'r': resize(); return;  /* hidden command... */
+    case '?': showKeyHelp(); return;
+    }
+    if (bt != btn_t::num_btn_types) {
+        push_button(bt);
+    } else {
+        pushBackPartialOpString(alpha);
+        main_display->pushBackPartialOpString(alpha);
     }
 };
 
