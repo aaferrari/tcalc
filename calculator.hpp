@@ -94,6 +94,9 @@ class Calculator {
     /// Handle enter key action which can happen at any time.
     void key_enter();
 
+    /// Handle escape key
+    void key_escape();
+
     /// Redisplay all the things when window resizing occurs.
     /// Any key selection will be cancelled on resizing.
     void resize();

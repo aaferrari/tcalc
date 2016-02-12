@@ -29,6 +29,9 @@ int main() {
         case 10:         /* Enter */
             calculator.key_enter();
             break;
+        case 27:         /* ESCAPE */
+            calculator.key_escape();
+            break;
         case 9:          /* Tab */
             calculator.select_next();
             break;

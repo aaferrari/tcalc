@@ -286,6 +286,11 @@ void Calculator::key_enter() {
     resize();
 };
 
+void Calculator::key_escape() {
+    selected_button_idx = DEFAULT_SELECTED_BUTTON_IDX;
+    resize();
+};
+
 void Calculator::showKeyHelp() {
     if (selected_button_idx != DEFAULT_SELECTED_BUTTON_IDX) {
         key_help->setDesc(
