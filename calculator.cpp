@@ -218,11 +218,12 @@ void Calculator::select_up() {
     if (selected_button_idx != DEFAULT_SELECTED_BUTTON_IDX) {
         unselect_button(selected_button_idx);
     }
-    if (selected_button_idx - num_buttons_x >= 0) {
-        int prev = selected_button_idx / (num_buttons_x * num_buttons_y);
-        int next = (selected_button_idx - num_buttons_x) / (num_buttons_x * num_buttons_y);
-        if (prev == next) {
-            selected_button_idx -= num_buttons_x;
+    selected_button_idx -= num_buttons_x;
+    if (selected_button_idx < 0) {
+        selected_button_idx += (int)(buttons.size());
+        int resi = (int)(buttons.size()) % num_buttons_x;
+        if (resi > 0) {
+            selected_button_idx += num_buttons_x  - resi;
         }
     }
     render(selected_button_idx);
@@ -230,15 +231,16 @@ void Calculator::select_up() {
 
 void Calculator::select_down() {
     if (selected_button_idx == DEFAULT_SELECTED_BUTTON_IDX) {
-        selected_button_idx = 0;
-    } else {
-        unselect_button(selected_button_idx);
-        if (selected_button_idx + num_buttons_x < (int)(buttons.size())) {
-            int prev = selected_button_idx / (num_buttons_x * num_buttons_y);
-            int next = (selected_button_idx + num_buttons_x) / (num_buttons_x * num_buttons_y);
-            if (prev == next) {
-                selected_button_idx += num_buttons_x;
-            }
+        render(0);
+        return;
+    }
+    unselect_button(selected_button_idx);
+    selected_button_idx += num_buttons_x;
+    if (selected_button_idx > (int)(buttons.size()) - 1) {
+        selected_button_idx -= (int)(buttons.size());
+        int resi = (int)(buttons.size()) % num_buttons_x;
+        if (resi > 0) {
+            selected_button_idx -= num_buttons_x - resi;
         }
     }
     render(selected_button_idx);

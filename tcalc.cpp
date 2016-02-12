@@ -36,9 +36,11 @@ int main() {
             calculator.select_next();
             break;
         case KEY_UP:     /* UP */
+        case KEY_PPAGE:  /* PAGE UP */
             calculator.select_up();
             break;
         case KEY_DOWN:   /* DOWN */
+        case KEY_NPAGE:  /* PAGE_DOWN */
             calculator.select_down();
             break;
         case KEY_LEFT:   /* LEFT */
