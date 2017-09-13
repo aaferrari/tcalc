@@ -8,11 +8,12 @@
 
 //#include <ncurses.h>
 #include "wrapped_ncurses.hpp"
-#include "lib/exprtk/exprtk.hpp"
 
 #include "calculator.hpp"
 #include "calculator/keys.hpp"
 #include "calculator/component.hpp"
+
+#include <muParser.h>
 
 void initcolor() {
     if (ncurses::has_colors() != FALSE) {
@@ -277,8 +278,17 @@ void Calculator::key_enter() {
         // execute buffered equation
         std::string expression_string = joinStrVec(buffered_equation) + 
             joinStrVec(buffered_partial_op_string);
-        double res = calculate<double>(expression_string);
-        main_display->setResult(std::to_string(res));
+        try {
+            double res = calculate<double>(expression_string);
+            int res_int = (int)res;
+            // Convert to integer if result has no decimals
+            if (res == res_int) { main_display->setResult(std::to_string(res_int)); }
+            else { main_display->setResult(std::to_string(res)); }
+        }
+        catch (mu::Parser::exception_type &e) {
+            //main_display->setResult(e.GetMsg());
+            main_display->setResult("nan");
+        }
         main_display->redisplay();
     } else {
         btn_t bt = buttons[selected_button_idx]->getAttribute().bt;

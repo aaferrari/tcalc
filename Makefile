@@ -2,7 +2,7 @@
 
 EXECUTABLE_NAME = tcalc
 CXX             = g++
-CXX_FLAGS       = -g -std=c++11 -lncurses -Wall
+CXX_FLAGS       = -g -std=c++11 -lncurses -lmuparser -Wall
 
 all: tcalc.cpp
 	$(CXX) $(CXX_FLAGS) -o $(EXECUTABLE_NAME) tcalc.cpp

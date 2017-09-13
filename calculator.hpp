@@ -11,9 +11,13 @@
 #include <cstring>
 #include <algorithm>
 #include <ncurses.h>
-#include "lib/exprtk/exprtk.hpp"
+#include <muParser.h>
+#include <cmath>
 
 #include "calculator/keys.hpp"
+
+// This macro will enable mathematical constants (like M_PI) in muParser.
+#define _USE_MATH_DEFINES		
 
 namespace std {
 template<typename T, typename... Ts>
@@ -64,6 +68,27 @@ class Calculator {
     class ButtonComponent;
     class KeyHelpComponent;
 
+    /// Base N logarithm    
+    double logn(double x, double base) { return log(x) / log(base); }
+    
+    /// Nth-Root of x
+    double root(double input, double n) { return round(pow(input, 1./n)); }
+
+    /// Cotangent
+    double cot(double x) { return cos(x) / sin(x); }
+
+    /// Cosecant
+    double csc(double x) { return 1 / sin(x); }
+
+    /// Secant
+    double sec(double x) { return 1 / cos(x); }
+
+    /// Sine cardinal
+    double sinc(double x) { return sin(x) / x; }
+
+    /// Normalized sine cardinal (normally used in digital signal processing)
+    double sincN(double x) { return sin(M_PI * x) / M_PI * x; }
+    
     /// Default constructor constructs a calculator object with default settings.
     Calculator() : Calculator(getDefaultButtonAttributes()) {};
 
@@ -144,16 +169,23 @@ class Calculator {
     };
 
     /// Evaluate input expression string as an mathematical expression.
-    /// Completely depends on exprtk.
+    /// Completely depends on muParser.
     template <typename T>
     T calculate(std::string expression_string) {
-        //using symbol_table_t = exprtk::symbol_table<T>;
-        using expression_t   = exprtk::expression<T>;
-        using parser_t       = exprtk::parser<T>;
-        expression_t expression;
-        parser_t parser;
-        parser.compile(expression_string, expression);
-        return expression.value();
+        mu::Parser parser;
+        parser.DefineConst("pi", M_PI);
+        parser.DefineConst("e", M_E);
+        // Some missing functions
+        /*parser.DefineFun("logn", logn);
+        parser.DefineFun("root", root);
+        parser.DefineFun("cot", cot);
+        parser.DefineFun("csc", csc);
+        parser.DefineFun("sec", sec);
+        parser.DefineFun("sinc", sinc);
+        parser.DefineFun("sincN", sincN);*/
+        parser.SetExpr(expression_string);
+        T result=parser.Eval();
+        return result;
     };
 
   protected:
